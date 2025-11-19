@@ -1,93 +1,93 @@
-import React from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, TextInput, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
-import Colors from '@/constants/colors';
-import { ArrowLeft, AlertCircle, CheckCircle } from 'lucide-react-native';
+import * as Haptics from 'expo-haptics';
+import { ArrowLeft, AlertCircle, Settings, Wand2, Sparkles, CheckCircle } from 'lucide-react-native';
+
+import { useTheme } from '@/constants/theme';
+import { useAIStore } from '@/store/aiStore';
+import { PROMPT_TEMPLATES } from '@/services/promptTemplates';
+import { interpolatePrompt } from '@/services/ai.service';
+import { CostEstimate } from '@/components/ai/CostTransparency';
 
 export default function PostTroubleshootingScreen() {
   const router = useRouter();
+  const theme = useTheme();
+  const { generateContent, config } = useAIStore();
 
-  const problems = [
-    {
-      id: '1',
-      problem: 'Low Engagement Rate',
-      solutions: [
-        'Post during peak hours (9-11 AM, 7-9 PM)',
-        'Ask questions to encourage comments',
-        'Use trending hashtags relevant to your niche',
-        'Create carousel posts for higher engagement',
-        'Respond to all comments within first hour'
-      ]
-    },
-    {
-      id: '2',
-      problem: 'Content Not Reaching New Audience',
-      solutions: [
-        'Collaborate with creators in your niche',
-        'Use location tags to reach local audience',
-        'Create shareable content (infographics, tips)',
-        'Engage with other accounts before posting',
-        'Use 3-5 niche-specific hashtags'
-      ]
-    },
-    {
-      id: '3',
-      problem: 'Low Video Views',
-      solutions: [
-        'Hook viewers in first 3 seconds',
-        'Add captions for sound-off viewing',
-        'Keep videos under 60 seconds',
-        'Use trending audio when relevant',
-        'Post when your audience is most active'
-      ]
-    },
-    {
-      id: '4',
-      problem: 'Losing Followers',
-      solutions: [
-        'Maintain consistent posting schedule',
-        'Share valuable, educational content',
-        'Avoid excessive promotional posts',
-        'Engage authentically with your community',
-        'Stay true to your niche'
-      ]
+  const [isGenerating, setIsGenerating] = useState(false);
+  const [generated, setGenerated] = useState<any[]>([]);
+  const [problem, setProblem] = useState('');
+
+  const handleGenerate = async () => {
+    if (!problem.trim()) return Alert.alert('Missing Problem', 'Describe your content issue');
+    if (!config?.openaiApiKey && !config?.anthropicApiKey) return Alert.alert('API Key Required', 'Add API key in Settings');
+
+    setIsGenerating(true);
+    try {
+      const template = PROMPT_TEMPLATES.POST_TROUBLESHOOTING;
+      const userPrompt = interpolatePrompt(template.userPromptTemplate, { problem: problem.trim(), solutionCount: '5' });
+      const result = await generateContent('post_troubleshooting', template.systemPrompt, userPrompt, { temperature: 0.7, maxTokens: 600 });
+
+      const solutions = result.split(/\n+/).filter(s => s.trim().length > 20).slice(0, 5).map((sol, i) => ({
+        id: `gen-${i}`,
+        solution: sol.replace(/^[\d\.\-\*\s]+/, '').trim(),
+        isGenerated: true
+      }));
+
+      setGenerated(solutions);
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+    } catch (error) {
+      Alert.alert('Failed', error instanceof Error ? error.message : 'Unknown error');
+    } finally {
+      setIsGenerating(false);
     }
-  ];
+  };
 
   return (
-    <SafeAreaView style={styles.container} edges={['top']}>
-      <View style={styles.header}>
-        <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
-          <ArrowLeft size={24} color={Colors.text} />
-        </TouchableOpacity>
-        <Text style={styles.title}>Post Troubleshooting</Text>
-        <View style={{ width: 24 }} />
+    <SafeAreaView style={[styles.container, { backgroundColor: theme.colors.backgroundPrimary }]} edges={['top']}>
+      <View style={[styles.header, { backgroundColor: theme.colors.card, borderBottomColor: theme.colors.border }]}>
+        <TouchableOpacity onPress={() => router.back()}><ArrowLeft size={24} color={theme.colors.textPrimary} /></TouchableOpacity>
+        <Text style={[styles.title, { color: theme.colors.textPrimary }]}>Post Troubleshooting</Text>
+        <TouchableOpacity onPress={() => router.push('/settings')}><Settings size={20} color={theme.colors.textSecondary} /></TouchableOpacity>
       </View>
 
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <ScrollView>
         <View style={styles.content}>
-          <View style={styles.intro}>
-            <AlertCircle size={24} color={Colors.warning} />
-            <Text style={styles.introText}>
-              Diagnose and fix common content performance issues
-            </Text>
+          <View style={[styles.intro, { backgroundColor: theme.colors.aiBackground, borderColor: theme.colors.border }]}>
+            <AlertCircle size={24} color={theme.colors.aiPrimary} />
+            <Text style={[styles.introText, { color: theme.colors.textPrimary }]}>AI-powered solutions for your content challenges</Text>
           </View>
 
-          {problems.map((item) => (
-            <View key={item.id} style={styles.problemCard}>
-              <View style={styles.problemHeader}>
-                <AlertCircle size={20} color={Colors.error} />
-                <Text style={styles.problemText}>{item.problem}</Text>
-              </View>
+          <View style={[styles.form, { backgroundColor: theme.colors.card, borderColor: theme.colors.border }]}>
+            <TextInput
+              style={[styles.input, { backgroundColor: theme.colors.backgroundSecondary, borderColor: theme.colors.border, color: theme.colors.textPrimary }]}
+              placeholder="Describe your problem (e.g., low engagement, no reach)"
+              placeholderTextColor={theme.colors.textTertiary}
+              value={problem}
+              onChangeText={setProblem}
+              multiline
+            />
+            {problem.trim() && <CostEstimate estimatedCost={0.02} showDetails={false} />}
+            <TouchableOpacity style={[styles.btn, { backgroundColor: theme.colors.aiPrimary }, isGenerating && { opacity: 0.6 }]} onPress={handleGenerate} disabled={isGenerating}>
+              <Wand2 size={20} color="#FFF" />
+              <Text style={styles.btnText}>{isGenerating ? 'Analyzing...' : 'Get Solutions'}</Text>
+            </TouchableOpacity>
+          </View>
 
-              <Text style={styles.solutionsTitle}>Solutions:</Text>
-              {item.solutions.map((solution, index) => (
-                <View key={index} style={styles.solutionItem}>
-                  <CheckCircle size={16} color={Colors.success} />
-                  <Text style={styles.solutionText}>{solution}</Text>
+          {generated.map((item, index) => (
+            <View key={item.id} style={[styles.card, { backgroundColor: theme.colors.card, borderColor: theme.colors.border, borderLeftWidth: 4, borderLeftColor: theme.colors.success }]}>
+              <View style={styles.row}>
+                <CheckCircle size={18} color={theme.colors.success} />
+                <Text style={[styles.solution, { color: theme.colors.textPrimary }]}>{item.solution}</Text>
+              </View>
+              {item.isGenerated && (
+                <View style={[styles.aiBadge, { backgroundColor: theme.colors.aiBackground }]}>
+                  <Sparkles size={10} color={theme.colors.aiPrimary} />
+                  <Text style={[styles.aiBadgeText, { color: theme.colors.aiPrimary }]}>AI Solution</Text>
                 </View>
-              ))}
+              )}
             </View>
           ))}
         </View>
@@ -97,82 +97,19 @@ export default function PostTroubleshootingScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: Colors.background,
-  },
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    backgroundColor: Colors.card,
-    borderBottomWidth: 1,
-    borderBottomColor: Colors.border,
-  },
-  backButton: {
-    padding: 4,
-  },
-  title: {
-    fontSize: 18,
-    fontWeight: '600',
-    color: Colors.text,
-  },
-  content: {
-    padding: 16,
-  },
-  intro: {
-    flexDirection: 'row',
-    backgroundColor: Colors.warning + Colors.opacity10,
-    padding: 16,
-    borderRadius: 12,
-    marginBottom: 24,
-    alignItems: 'center',
-    gap: 12,
-  },
-  introText: {
-    flex: 1,
-    fontSize: 14,
-    color: Colors.text,
-    lineHeight: 20,
-  },
-  problemCard: {
-    backgroundColor: Colors.card,
-    borderRadius: 12,
-    padding: 16,
-    marginBottom: 16,
-    borderWidth: 1,
-    borderColor: Colors.border,
-  },
-  problemHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-    marginBottom: 16,
-  },
-  problemText: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: Colors.text,
-    flex: 1,
-  },
-  solutionsTitle: {
-    fontSize: 14,
-    fontWeight: '600',
-    color: Colors.text,
-    marginBottom: 12,
-  },
-  solutionItem: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    gap: 8,
-    marginBottom: 10,
-  },
-  solutionText: {
-    flex: 1,
-    fontSize: 13,
-    color: Colors.textSecondary,
-    lineHeight: 18,
-  },
+  container: { flex: 1 },
+  header: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: 16, paddingVertical: 12, borderBottomWidth: 1 },
+  title: { fontSize: 18, fontWeight: '600' },
+  content: { padding: 16, gap: 16 },
+  intro: { flexDirection: 'row', padding: 16, borderRadius: 12, alignItems: 'center', gap: 12, borderWidth: 1 },
+  introText: { flex: 1, fontSize: 14 },
+  form: { padding: 16, borderRadius: 12, borderWidth: 1, gap: 16 },
+  input: { borderWidth: 1, borderRadius: 8, padding: 12, fontSize: 15, minHeight: 60 },
+  btn: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 8, paddingVertical: 14, borderRadius: 8 },
+  btnText: { fontSize: 16, fontWeight: '700', color: '#FFF' },
+  card: { borderRadius: 12, padding: 16, borderWidth: 1, gap: 10 },
+  row: { flexDirection: 'row', gap: 10, alignItems: 'flex-start' },
+  solution: { fontSize: 15, lineHeight: 22, flex: 1 },
+  aiBadge: { flexDirection: 'row', alignItems: 'center', gap: 4, paddingHorizontal: 8, paddingVertical: 4, borderRadius: 6, alignSelf: 'flex-start' },
+  aiBadgeText: { fontSize: 11, fontWeight: '600' },
 });

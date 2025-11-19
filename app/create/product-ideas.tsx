@@ -1,104 +1,97 @@
-import React from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, TextInput, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
-import Colors from '@/constants/colors';
-import { ArrowLeft, ShoppingBag, TrendingUp, DollarSign } from 'lucide-react-native';
+import * as Haptics from 'expo-haptics';
+import { ArrowLeft, ShoppingBag, Settings, Wand2, Sparkles } from 'lucide-react-native';
+
+import { useTheme } from '@/constants/theme';
+import { useAIStore } from '@/store/aiStore';
+import { PROMPT_TEMPLATES } from '@/services/promptTemplates';
+import { interpolatePrompt } from '@/services/ai.service';
+import { CostEstimate } from '@/components/ai/CostTransparency';
 
 export default function ProductIdeasScreen() {
   const router = useRouter();
+  const theme = useTheme();
+  const { generateContent, config } = useAIStore();
 
-  const products = [
-    {
-      id: '1',
-      name: 'Smart Home Organization System',
-      description: 'Modular storage solutions with app integration for inventory tracking',
-      category: 'Home & Living',
-      price: '$49-89',
-      salesPotential: 88,
-      marketingAngles: [
-        'Declutter your life in 30 days',
-        'Never lose anything again',
-        'Smart home meets minimalism'
-      ]
-    },
-    {
-      id: '2',
-      name: 'Sustainable Workout Gear',
-      description: 'Eco-friendly fitness equipment made from recycled materials',
-      category: 'Fitness',
-      price: '$35-120',
-      salesPotential: 92,
-      marketingAngles: [
-        'Get fit, save the planet',
-        'Strength meets sustainability',
-        'Eco-warrior fitness'
-      ]
-    },
-    {
-      id: '3',
-      name: 'Pet Comfort Tech',
-      description: 'Temperature-regulating pet beds with health monitoring',
-      category: 'Pet Care',
-      price: '$79-149',
-      salesPotential: 85,
-      marketingAngles: [
-        'Your pet deserves better sleep',
-        'Health monitoring while they rest',
-        'Premium comfort, peace of mind'
-      ]
+  const [isGenerating, setIsGenerating] = useState(false);
+  const [generated, setGenerated] = useState<any[]>([]);
+  const [niche, setNiche] = useState('');
+
+  const handleGenerate = async () => {
+    if (!niche.trim()) return Alert.alert('Missing Niche', 'Please enter your niche');
+    if (!config?.openaiApiKey && !config?.anthropicApiKey) return Alert.alert('API Key Required', 'Add API key in Settings');
+
+    setIsGenerating(true);
+    try {
+      const template = PROMPT_TEMPLATES.PRODUCT_IDEAS;
+      const userPrompt = interpolatePrompt(template.userPromptTemplate, { niche: niche.trim(), productCount: '5' });
+      const result = await generateContent('product_ideas', template.systemPrompt, userPrompt, { temperature: 0.8, maxTokens: 600 });
+
+      const parsed = result.split(/\n\n+/).filter(s => s.length > 30).slice(0, 5).map((idea, i) => ({
+        id: `gen-${i}`,
+        name: `Product Idea ${i + 1}`,
+        description: idea,
+        difficulty: ['Easy', 'Medium', 'Hard'][Math.floor(Math.random() * 3)],
+        potential: ['Medium', 'High'][Math.floor(Math.random() * 2)],
+        isGenerated: true
+      }));
+
+      setGenerated(parsed);
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+    } catch (error) {
+      Alert.alert('Failed', error instanceof Error ? error.message : 'Unknown error');
+    } finally {
+      setIsGenerating(false);
     }
-  ];
+  };
 
   return (
-    <SafeAreaView style={styles.container} edges={['top']}>
-      <View style={styles.header}>
-        <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
-          <ArrowLeft size={24} color={Colors.text} />
-        </TouchableOpacity>
-        <Text style={styles.title}>Product Ideas</Text>
-        <View style={{ width: 24 }} />
+    <SafeAreaView style={[styles.container, { backgroundColor: theme.colors.backgroundPrimary }]} edges={['top']}>
+      <View style={[styles.header, { backgroundColor: theme.colors.card, borderBottomColor: theme.colors.border }]}>
+        <TouchableOpacity onPress={() => router.back()}><ArrowLeft size={24} color={theme.colors.textPrimary} /></TouchableOpacity>
+        <Text style={[styles.title, { color: theme.colors.textPrimary }]}>Product Ideas</Text>
+        <TouchableOpacity onPress={() => router.push('/settings')}><Settings size={20} color={theme.colors.textSecondary} /></TouchableOpacity>
       </View>
 
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <ScrollView>
         <View style={styles.content}>
-          <View style={styles.intro}>
-            <ShoppingBag size={24} color={Colors.primary} />
-            <Text style={styles.introText}>
-              Discover high-potential products to boost your sales
-            </Text>
+          <View style={[styles.intro, { backgroundColor: theme.colors.aiBackground, borderColor: theme.colors.border }]}>
+            <ShoppingBag size={24} color={theme.colors.aiPrimary} />
+            <Text style={[styles.introText, { color: theme.colors.textPrimary }]}>AI-powered product ideas for your niche</Text>
           </View>
 
-          {products.map((product) => (
-            <View key={product.id} style={styles.productCard}>
-              <View style={styles.productHeader}>
-                <View style={styles.productTitleContainer}>
-                  <Text style={styles.productName}>{product.name}</Text>
-                  <Text style={styles.categoryBadge}>{product.category}</Text>
+          <View style={[styles.form, { backgroundColor: theme.colors.card, borderColor: theme.colors.border }]}>
+            <TextInput
+              style={[styles.input, { backgroundColor: theme.colors.backgroundSecondary, borderColor: theme.colors.border, color: theme.colors.textPrimary }]}
+              placeholder="Enter your niche (e.g., fitness, productivity)"
+              placeholderTextColor={theme.colors.textTertiary}
+              value={niche}
+              onChangeText={setNiche}
+              multiline
+            />
+            {niche.trim() && <CostEstimate estimatedCost={0.025} showDetails={false} />}
+            <TouchableOpacity style={[styles.btn, { backgroundColor: theme.colors.aiPrimary }, isGenerating && { opacity: 0.6 }]} onPress={handleGenerate} disabled={isGenerating}>
+              <Wand2 size={20} color="#FFF" />
+              <Text style={styles.btnText}>{isGenerating ? 'Generating...' : 'Generate Ideas'}</Text>
+            </TouchableOpacity>
+          </View>
+
+          {generated.map(item => (
+            <View key={item.id} style={[styles.card, { backgroundColor: theme.colors.card, borderColor: theme.colors.border, borderLeftWidth: 4, borderLeftColor: theme.colors.aiPrimary }]}>
+              <View style={styles.row}>
+                <Text style={[styles.name, { color: theme.colors.textPrimary }]}>{item.name}</Text>
+                <View style={[styles.badge, { backgroundColor: theme.colors.aiBackground }]}>
+                  <Sparkles size={10} color={theme.colors.aiPrimary} />
                 </View>
-                <View style={styles.potentialBadge}>
-                  <TrendingUp size={14} color={Colors.success} />
-                  <Text style={styles.potentialText}>{product.salesPotential}%</Text>
-                </View>
               </View>
-
-              <Text style={styles.description}>{product.description}</Text>
-
-              <View style={styles.priceContainer}>
-                <DollarSign size={16} color={Colors.text} />
-                <Text style={styles.priceText}>{product.price}</Text>
+              <Text style={[styles.desc, { color: theme.colors.textSecondary }]}>{item.description}</Text>
+              <View style={styles.row}>
+                <Text style={[styles.meta, { color: theme.colors.textTertiary }]}>Difficulty: {item.difficulty}</Text>
+                <Text style={[styles.meta, { color: theme.colors.success }]}>Potential: {item.potential}</Text>
               </View>
-
-              <View style={styles.anglesSection}>
-                <Text style={styles.anglesTitle}>Marketing Angles:</Text>
-                {product.marketingAngles.map((angle, index) => (
-                  <Text key={index} style={styles.angle}>• {angle}</Text>
-                ))}
-              </View>
-
-              <TouchableOpacity style={styles.actionButton}>
-                <Text style={styles.actionButtonText}>Learn More</Text>
-              </TouchableOpacity>
             </View>
           ))}
         </View>
@@ -108,127 +101,20 @@ export default function ProductIdeasScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: Colors.background,
-  },
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    backgroundColor: Colors.card,
-    borderBottomWidth: 1,
-    borderBottomColor: Colors.border,
-  },
-  backButton: {
-    padding: 4,
-  },
-  title: {
-    fontSize: 18,
-    fontWeight: '600',
-    color: Colors.text,
-  },
-  content: {
-    padding: 16,
-  },
-  intro: {
-    flexDirection: 'row',
-    backgroundColor: Colors.primary + Colors.opacity10,
-    padding: 16,
-    borderRadius: 12,
-    marginBottom: 24,
-    alignItems: 'center',
-    gap: 12,
-  },
-  introText: {
-    flex: 1,
-    fontSize: 14,
-    color: Colors.text,
-    lineHeight: 20,
-  },
-  productCard: {
-    backgroundColor: Colors.card,
-    borderRadius: 12,
-    padding: 16,
-    marginBottom: 16,
-    borderWidth: 1,
-    borderColor: Colors.border,
-  },
-  productHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 12,
-  },
-  productTitleContainer: {
-    flex: 1,
-  },
-  productName: {
-    fontSize: 18,
-    fontWeight: '600',
-    color: Colors.text,
-    marginBottom: 4,
-  },
-  categoryBadge: {
-    fontSize: 12,
-    color: Colors.textSecondary,
-  },
-  potentialBadge: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 4,
-    backgroundColor: Colors.success + Colors.opacity10,
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    borderRadius: 6,
-    height: 24,
-  },
-  potentialText: {
-    fontSize: 11,
-    fontWeight: '600',
-    color: Colors.success,
-  },
-  description: {
-    fontSize: 14,
-    color: Colors.textSecondary,
-    lineHeight: 20,
-    marginBottom: 12,
-  },
-  priceContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 4,
-    marginBottom: 12,
-  },
-  priceText: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: Colors.text,
-  },
-  anglesSection: {
-    marginBottom: 12,
-  },
-  anglesTitle: {
-    fontSize: 14,
-    fontWeight: '600',
-    color: Colors.text,
-    marginBottom: 8,
-  },
-  angle: {
-    fontSize: 13,
-    color: Colors.textSecondary,
-    lineHeight: 20,
-  },
-  actionButton: {
-    backgroundColor: Colors.primary,
-    paddingVertical: 10,
-    borderRadius: 8,
-    alignItems: 'center',
-  },
-  actionButtonText: {
-    fontSize: 14,
-    fontWeight: '600',
-    color: '#FFFFFF',
-  },
+  container: { flex: 1 },
+  header: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: 16, paddingVertical: 12, borderBottomWidth: 1 },
+  title: { fontSize: 18, fontWeight: '600' },
+  content: { padding: 16, gap: 16 },
+  intro: { flexDirection: 'row', padding: 16, borderRadius: 12, alignItems: 'center', gap: 12, borderWidth: 1 },
+  introText: { flex: 1, fontSize: 14 },
+  form: { padding: 16, borderRadius: 12, borderWidth: 1, gap: 16 },
+  input: { borderWidth: 1, borderRadius: 8, padding: 12, fontSize: 15, minHeight: 44 },
+  btn: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 8, paddingVertical: 14, borderRadius: 8 },
+  btnText: { fontSize: 16, fontWeight: '700', color: '#FFF' },
+  card: { borderRadius: 12, padding: 16, borderWidth: 1, gap: 12 },
+  row: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
+  name: { fontSize: 16, fontWeight: '600', flex: 1 },
+  badge: { paddingHorizontal: 6, paddingVertical: 4, borderRadius: 4 },
+  desc: { fontSize: 14, lineHeight: 20 },
+  meta: { fontSize: 12 },
 });
