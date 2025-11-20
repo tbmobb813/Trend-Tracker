@@ -18,7 +18,7 @@ import { ArrowLeft, FileText, Copy, Settings, Wand2, Sparkles } from 'lucide-rea
 import { useTheme } from '@/constants/theme';
 import { useAIStore } from '@/store/aiStore';
 import { PROMPT_TEMPLATES } from '@/services/promptTemplates';
-import { interpolatePrompt } from '@/services/ai.service';
+import { interpolatePrompt } from '@/services/promptTemplates';
 import { CostEstimate } from '@/components/ai/CostTransparency';
 import { useOnboarding, ContextualTooltip } from '@/components/onboarding/ProgressiveOnboarding';
 

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, TextInput, Alert } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, TextInput, Alert, Platform } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import * as Haptics from 'expo-haptics';
@@ -8,7 +8,7 @@ import { ArrowLeft, Film, Settings, Wand2, Sparkles } from 'lucide-react-native'
 import { useTheme } from '@/constants/theme';
 import { useAIStore } from '@/store/aiStore';
 import { PROMPT_TEMPLATES } from '@/services/promptTemplates';
-import { interpolatePrompt } from '@/services/ai.service';
+import { interpolatePrompt } from '@/services/promptTemplates';
 import { CostEstimate } from '@/components/ai/CostTransparency';
 
 const PLATFORMS = ['YouTube', 'TikTok', 'Instagram', 'YouTube Shorts'];

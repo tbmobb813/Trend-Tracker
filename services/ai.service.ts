@@ -19,7 +19,10 @@ export class AIService {
    * Check if service is initialized
    */
   isInitialized(): boolean {
-    return this.config !== null && this.config.apiKey.length > 0;
+    if (!this.config) return false;
+    // Check that the selected provider has an API key configured
+    if (this.config.provider === 'openai') return !!this.config.openaiApiKey?.length || !!this.config.apiKey?.length;
+    return !!this.config.anthropicApiKey?.length || !!this.config.apiKey?.length;
   }
 
   /**
@@ -118,11 +121,13 @@ export class AIService {
     const temperature = options?.temperature ?? this.config!.temperature;
     const maxTokens = options?.maxTokens ?? this.config!.maxTokens;
 
+  const apiKey = this.config!.openaiApiKey || this.config!.apiKey;
+  if (!apiKey) throw new Error('OpenAI API key not configured');
     const response = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${this.config!.apiKey}`,
+        Authorization: `Bearer ${apiKey}`,
       },
       body: JSON.stringify({
         model: this.config!.model,
@@ -159,11 +164,13 @@ export class AIService {
     const temperature = options?.temperature ?? this.config!.temperature;
     const maxTokens = options?.maxTokens ?? this.config!.maxTokens;
 
-    const response = await fetch('https://api.anthropic.com/v1/messages', {
+  const apiKey = this.config!.anthropicApiKey || this.config!.apiKey;
+  if (!apiKey) throw new Error('Anthropic API key not configured');
+  const response = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'x-api-key': this.config!.apiKey,
+        'x-api-key': apiKey,
         'anthropic-version': '2023-06-01',
       },
       body: JSON.stringify({
@@ -346,11 +353,13 @@ export class AIService {
     userPrompt: string,
     options?: { temperature?: number; maxTokens?: number }
   ): AsyncGenerator<string, void, unknown> {
+    const apiKey = this.config!.anthropicApiKey || this.config!.apiKey;
+    if (!apiKey) throw new Error('Anthropic API key not configured');
     const response = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'x-api-key': this.config!.apiKey,
+        'x-api-key': apiKey,
         'anthropic-version': '2023-06-01',
       },
       body: JSON.stringify({

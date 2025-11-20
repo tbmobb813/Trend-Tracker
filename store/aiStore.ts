@@ -41,6 +41,12 @@ interface AIStore {
   totalGenerations: number;
   totalTokensUsed: number;
   totalCostIncurred: number;
+  // Convenience aggregated statistics used by UI
+  statistics?: {
+    totalCost: number;
+    totalGenerations: number;
+    totalTokens?: number;
+  };
 
   // Actions - Configuration
   setConfig: (config: AIConfig) => void;
@@ -70,6 +76,8 @@ interface AIStore {
       temperature?: number;
       maxTokens?: number;
       saveToHistory?: boolean;
+      voiceToneProfile?: VoiceToneProfile;
+      brandProfile?: BrandProfile;
     }
   ) => Promise<string>;
 
@@ -125,6 +133,7 @@ export const useAIStore = create<AIStore>()(
       totalGenerations: 0,
       totalTokensUsed: 0,
       totalCostIncurred: 0,
+  statistics: { totalCost: 0, totalGenerations: 0, totalTokens: 0 },
 
       // Configuration Actions
       setConfig: (config) => {
@@ -253,14 +262,17 @@ export const useAIStore = create<AIStore>()(
         set({ isGenerating: true, currentGenerationStep: `Generating ${toolType}...` });
 
         try {
+          const voice = options.voiceToneProfile ?? selectedVoiceToneProfile ?? undefined;
+          const brand = options.brandProfile ?? selectedBrandProfile ?? undefined;
+
           const result = await aiService.generateText(
             systemPrompt,
             userPrompt,
             {
               temperature: options.temperature,
               maxTokens: options.maxTokens,
-              voiceToneProfile: selectedVoiceToneProfile || undefined,
-              brandProfile: selectedBrandProfile || undefined,
+              voiceToneProfile: voice,
+              brandProfile: brand,
             }
           );
 
@@ -271,8 +283,8 @@ export const useAIStore = create<AIStore>()(
               toolType,
               prompt: userPrompt,
               result: result.text,
-              voiceToneProfileId: selectedVoiceToneProfile?.id,
-              brandProfileId: selectedBrandProfile?.id,
+              voiceToneProfileId: voice?.id,
+              brandProfileId: brand?.id,
               createdAt: new Date().toISOString(),
               tokens: result.tokens,
               cost: result.cost,
@@ -339,6 +351,11 @@ export const useAIStore = create<AIStore>()(
         set((state) => ({
           generationHistory: [result, ...state.generationHistory].slice(0, 100), // Keep last 100
           totalGenerations: state.totalGenerations + 1,
+          statistics: {
+            totalCost: state.statistics?.totalCost || 0,
+            totalGenerations: (state.statistics?.totalGenerations || 0) + 1,
+            totalTokens: state.statistics?.totalTokens || 0,
+          },
         }));
       },
 
@@ -358,10 +375,19 @@ export const useAIStore = create<AIStore>()(
 
       // Statistics
       updateStatistics: (tokens, cost) => {
-        set((state) => ({
-          totalTokensUsed: state.totalTokensUsed + tokens,
-          totalCostIncurred: state.totalCostIncurred + cost,
-        }));
+        set((state) => {
+          const totalTokensUsed = state.totalTokensUsed + tokens;
+          const totalCostIncurred = state.totalCostIncurred + cost;
+          return {
+            totalTokensUsed,
+            totalCostIncurred,
+            statistics: {
+              totalCost: totalCostIncurred,
+              totalGenerations: state.statistics?.totalGenerations || state.totalGenerations || 0,
+              totalTokens: totalTokensUsed,
+            },
+          };
+        });
       },
 
       resetStatistics: () => {

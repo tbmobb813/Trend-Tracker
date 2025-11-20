@@ -16,7 +16,7 @@ import { ArrowLeft, Image, TrendingUp, Settings, Wand2, Sparkles } from 'lucide-
 import { useTheme } from '@/constants/theme';
 import { useAIStore } from '@/store/aiStore';
 import { PROMPT_TEMPLATES } from '@/services/promptTemplates';
-import { interpolatePrompt } from '@/services/ai.service';
+import { interpolatePrompt } from '@/services/promptTemplates';
 import { CostEstimate } from '@/components/ai/CostTransparency';
 
 export default function ThumbnailIdeasScreen() {

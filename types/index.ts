@@ -100,10 +100,17 @@ export interface DigitalProduct {
 // AI Configuration Types
 export interface AIConfig {
   provider: 'openai' | 'anthropic';
-  apiKey: string;
+  // Legacy single apiKey kept for backwards compatibility (optional)
+  apiKey?: string;
+  // Explicit provider keys
+  openaiApiKey?: string;
+  anthropicApiKey?: string;
   model: string;
   temperature: number;
   maxTokens: number;
+  // Optional billing/configuration fields
+  monthlyBudgetLimit?: number;
+  defaultProvider?: 'openai' | 'anthropic';
 }
 
 export interface VoiceToneProfile {
@@ -264,7 +271,8 @@ export interface ImageGenerationRequest {
   id: string;
   prompt: string;
   style: 'realistic' | 'illustration' | 'minimalist' | 'bold' | 'vintage' | 'modern';
-  platform: 'YouTube' | 'TikTok' | 'Instagram' | 'LinkedIn' | 'General';
+  // include common social platforms used across the app
+  platform: 'YouTube' | 'TikTok' | 'Instagram' | 'LinkedIn' | 'Facebook' | 'Twitter' | 'General';
   dimensions: {
     width: number;
     height: number;

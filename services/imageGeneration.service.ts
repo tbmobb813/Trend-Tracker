@@ -25,7 +25,9 @@ export class ImageGenerationService {
    * Check if service is initialized
    */
   isInitialized(): boolean {
-    return this.config !== null && this.config.apiKey.length > 0;
+    if (!this.config) return false;
+    // If provider is openai, require openaiApiKey (or legacy apiKey)
+    return !!(this.config.openaiApiKey || this.config.apiKey);
   }
 
   /**
@@ -288,7 +290,7 @@ export class ImageGenerationService {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${this.config!.apiKey}`,
+        Authorization: `Bearer ${this.config!.openaiApiKey || this.config!.apiKey}`,
       },
       body: JSON.stringify({
         model: 'dall-e-3',
@@ -332,7 +334,7 @@ export class ImageGenerationService {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${this.config!.apiKey}`,
+        Authorization: `Bearer ${this.config!.openaiApiKey || this.config!.apiKey}`,
         Accept: 'application/json',
       },
       body: JSON.stringify({

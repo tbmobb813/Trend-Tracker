@@ -11,7 +11,10 @@ interface InsightCardProps {
 export default function InsightCard({ insight }: InsightCardProps) {
   const getCategoryColor = (category: string) => {
     const categoryKey = category.toLowerCase() as keyof typeof Colors;
-    return Colors[categoryKey] || Colors.primary;
+    const value = Colors[categoryKey];
+    if (Array.isArray(value)) return value[0] as string;
+    if (typeof value === 'object') return (value as any).primary || Colors.primary;
+    return (value as string) || Colors.primary;
   };
 
   const categoryColor = getCategoryColor(insight.category);

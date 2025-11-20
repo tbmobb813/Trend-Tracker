@@ -25,7 +25,6 @@ This document provides a complete guide to the advanced AI-powered content gener
 
 ### Core Services
 
-```
 services/
 ├── ai.service.ts              # Main AI text generation (OpenAI/Anthropic)
 ├── promptTemplates.ts         # 12 comprehensive prompt templates
@@ -33,21 +32,16 @@ services/
 ├── reasoning.service.ts       # Advanced multi-step reasoning
 ├── imageGeneration.service.ts # AI image generation (DALL-E/Stability)
 └── voiceTone.service.ts       # Voice/tone & brand profile management
-```
 
 ### State Management
 
-```
 store/
 └── aiStore.ts                 # Zustand store for AI configuration & history
-```
 
 ### Type Definitions
 
-```
 types/
 └── index.ts                   # Comprehensive TypeScript types for all AI features
-```
 
 ---
 
@@ -58,12 +52,14 @@ types/
 **Purpose:** Generate viral, attention-grabbing hooks for TikTok videos
 
 **Key Features:**
+
 - Pattern interrupts and psychological triggers
 - Hook category classification (Story, Question, Claim, Relatable, Controversy)
 - Engagement potential scoring
 - Platform-specific optimization
 
 **Template Variables:**
+
 - `topic` - Main subject of the video
 - `audience` - Target demographic
 - `contentType` - Video format (tutorial, storytime, etc.)
@@ -71,11 +67,13 @@ types/
 - `emotion` - Primary emotion to evoke
 
 **Output Format:**
+
 - 5-7 hook variations
 - Category and engagement score for each
 - Explanation of why each hook works
 
 **Example Prompt:**
+
 ```
 Topic: Productivity tips for entrepreneurs
 Audience: Startup founders and solopreneurs
@@ -95,6 +93,7 @@ Output:
 **Purpose:** Create engaging multi-tweet threads optimized for virality
 
 **Key Features:**
+
 - Hook optimization for first tweet
 - Strategic thread structure (7-15 tweets)
 - Cliffhangers and curiosity gaps
@@ -102,6 +101,7 @@ Output:
 - Multiple thread frameworks (How-To, Story, List, Contrarian, Case Study)
 
 **Template Variables:**
+
 - `topic` - Thread subject
 - `threadType` - Framework to use
 - `audience` - Target readers
@@ -110,6 +110,7 @@ Output:
 - `cta` - Call-to-action
 
 **Thread Frameworks:**
+
 1. **How-To/Tutorial** - Step-by-step value delivery
 2. **Story-driven** - Personal narrative with lessons
 3. **List/Roundup** - X ways to achieve Y
@@ -118,6 +119,7 @@ Output:
 6. **Before/After** - Transformation stories
 
 **Output Format:**
+
 - Complete thread with numbered tweets
 - Hook tweet optimized for engagement
 - Strategic formatting and line breaks
@@ -130,12 +132,14 @@ Output:
 **Purpose:** Strategic hashtag recommendations for maximum discoverability
 
 **Key Features:**
+
 - Platform-specific strategies (Instagram, TikTok, Twitter, LinkedIn)
 - Hashtag size analysis (mega, large, medium, niche)
 - Trending hashtag identification
 - Balanced mix for reach + engagement
 
 **Template Variables:**
+
 - `platform` - Social media platform
 - `topic` - Content subject
 - `contentType` - Content format
@@ -145,12 +149,14 @@ Output:
 - `trendingTopics` - Current trends
 
 **Hashtag Strategy:**
+
 - **Mega (1M+ posts):** 1-2 hashtags for reach
 - **Large (100K-1M):** 2-3 hashtags for discovery
 - **Medium (10K-100K):** 3-4 hashtags for targeted reach
 - **Niche (1K-10K):** 3-5 hashtags for community
 
 **Platform Guidelines:**
+
 - Instagram: 20-30 hashtags
 - TikTok: 3-5 hashtags
 - Twitter: 1-2 hashtags
@@ -163,6 +169,7 @@ Output:
 **Purpose:** High-converting captions optimized for each platform
 
 **Key Features:**
+
 - Multiple copywriting frameworks (AIDA, PAS, Storytelling, Value-First)
 - Platform-specific optimization
 - Hook + value + CTA structure
@@ -170,6 +177,7 @@ Output:
 - Line break formatting
 
 **Template Variables:**
+
 - `platform` - Social media platform
 - `topic` - Content subject
 - `postType` - Format (carousel, reel, image, etc.)
@@ -217,6 +225,7 @@ Output:
 **Purpose:** High-CTR thumbnail concepts for video content
 
 **Key Features:**
+
 - Visual psychology and composition
 - Color psychology application
 - Facial expression optimization
@@ -225,6 +234,7 @@ Output:
 - A/B testing variations
 
 **Template Variables:**
+
 - `platform` - YouTube, TikTok, Instagram
 - `topic` - Video subject
 - `videoType` - Content format
@@ -257,6 +267,7 @@ Output:
    - Fear: Warning symbols
 
 **Platform Specs:**
+
 - YouTube: 1280x720px
 - TikTok: 1080x1920px (vertical)
 - Instagram: 1080x1080px (square)
@@ -268,6 +279,7 @@ Output:
 **Purpose:** Diagnose and solve content performance issues
 
 **Key Features:**
+
 - Algorithm analysis across platforms
 - Performance pattern recognition
 - Platform-specific diagnostics
@@ -275,6 +287,7 @@ Output:
 - Metric-driven recommendations
 
 **Template Variables:**
+
 - `platform` - Social media platform
 - `contentType` - Content experiencing issues
 - `metrics` - Current performance data
@@ -320,6 +333,7 @@ Output:
 **Purpose:** Generate validated e-commerce product opportunities
 
 **Key Features:**
+
 - Market gap analysis
 - Trend forecasting
 - Product-market fit assessment
@@ -327,6 +341,7 @@ Output:
 - Marketing angle development
 
 **Template Variables:**
+
 - `targetMarket` - Niche or demographic
 - `budget` - Development budget
 - `trends` - Current market trends
@@ -336,6 +351,7 @@ Output:
 - `sustainability` - Eco-friendly requirements
 
 **Product Categories:**
+
 1. **Problem-solvers** - Pain point solutions
 2. **Trend-riders** - Capitalize on trends
 3. **Improvement products** - Better versions of existing
@@ -343,6 +359,7 @@ Output:
 5. **Bundle opportunities** - Complementary products
 
 **Validation Criteria:**
+
 - Problem-solution fit
 - Target audience willingness to pay
 - Competitive advantage
@@ -351,6 +368,7 @@ Output:
 - Marketing angle strength
 
 **Output Includes:**
+
 - 5-7 product ideas
 - Market analysis for each
 - Pricing recommendations
@@ -364,6 +382,7 @@ Output:
 **Purpose:** Create profitable digital product ideas
 
 **Key Features:**
+
 - Digital product market analysis
 - Pricing strategy by category
 - Launch strategy development
@@ -371,6 +390,7 @@ Output:
 - Passive income optimization
 
 **Template Variables:**
+
 - `expertise` - Your knowledge area
 - `audience` - Target customers
 - `timeInvestment` - Development time available
@@ -406,6 +426,7 @@ Output:
    - Coaching and support
 
 **Pricing Ranges:**
+
 - Templates: $9-$49
 - Ebooks: $19-$97
 - Mini-courses: $47-$197
@@ -419,6 +440,7 @@ Output:
 **Purpose:** Production-ready video scripts with visual direction
 
 **Key Features:**
+
 - Platform-specific formatting
 - Retention optimization techniques
 - Visual direction and b-roll suggestions
@@ -426,6 +448,7 @@ Output:
 - Strategic pacing and hooks
 
 **Template Variables:**
+
 - `platform` - YouTube, TikTok, Instagram
 - `topic` - Video subject
 - `length` - Target duration
@@ -445,6 +468,7 @@ Output:
 5. **Conclusion (5-10 sec)** - Recap and CTA
 
 **Retention Techniques:**
+
 - Pattern interrupts every 5-7 seconds
 - Open loops and callbacks
 - Visual variety cues
@@ -452,13 +476,12 @@ Output:
 - Cliffhangers before value bombs
 
 **Script Format:**
-```
+
 [VISUAL] - What's on screen
 "VOICEOVER" - What's being said
 [SFX] - Sound effects
 [MUSIC] - Music cues
 [TEXT] - On-screen text
-```
 
 ---
 
@@ -467,6 +490,7 @@ Output:
 **Purpose:** Multi-slide posts for Instagram and LinkedIn
 
 **Key Features:**
+
 - Information architecture for slides
 - Swipe-through psychology
 - Design principles for readability
@@ -474,6 +498,7 @@ Output:
 - Engagement maximization
 
 **Template Variables:**
+
 - `platform` - Instagram or LinkedIn
 - `topic` - Carousel subject
 - `carouselType` - Format (how-to, list, story)
@@ -486,18 +511,21 @@ Output:
 **Carousel Structures:**
 
 **Instagram (10 slides):**
+
 1. Hook slide (stop scroll)
 2-8. Value delivery (one point per slide)
 9. Summary/Recap
 10. CTA slide
 
 **LinkedIn (8 slides):**
+
 1. Bold claim or question
 2-6. Supporting points with data
 7. Case study/example
 8. Takeaways and CTA
 
 **Design Principles:**
+
 - One concept per slide
 - Large, legible fonts (40pt minimum)
 - High contrast for readability
@@ -506,6 +534,7 @@ Output:
 - Swipe indicators
 
 **Popular Formats:**
+
 - How-To Guides
 - List Posts (X ways to Y)
 - Before/After Transformations
@@ -521,6 +550,7 @@ Output:
 **Purpose:** High-converting email automation sequences
 
 **Key Features:**
+
 - Multiple sequence types (welcome, sales, nurture)
 - Subject line optimization
 - Behavioral triggers
@@ -528,6 +558,7 @@ Output:
 - Deliverability best practices
 
 **Template Variables:**
+
 - `sequenceType` - Welcome, sales, nurture, re-engagement
 - `productService` - What you're promoting
 - `audience` - Target subscribers
@@ -541,6 +572,7 @@ Output:
 **Sequence Types:**
 
 **1. Welcome Sequence (5-7 emails):**
+
 - Email 1: Welcome + deliver lead magnet
 - Email 2: Share story + build trust
 - Email 3: Provide quick win
@@ -550,6 +582,7 @@ Output:
 - Email 7: Clear CTA
 
 **2. Sales Sequence (4-6 emails):**
+
 - Email 1: Problem awareness
 - Email 2: Solution introduction
 - Email 3: Benefits + features
@@ -558,6 +591,7 @@ Output:
 - Email 6: Urgency + final call
 
 **3. Nurture Sequence (ongoing):**
+
 - Value-focused content
 - Educational resources
 - Case studies
@@ -567,6 +601,7 @@ Output:
 **Email Copywriting Framework:**
 
 **Subject Line Formulas:**
+
 - Curiosity: "The one thing stopping you from..."
 - Benefit: "How to [outcome] in [timeframe]"
 - Social Proof: "[Number] people just did this..."
@@ -574,6 +609,7 @@ Output:
 - Personal: "[Name], quick question..."
 
 **Email Structure:**
+
 1. Preheader (extends subject)
 2. Opening (hook in first sentence)
 3. Body (value + story)
@@ -587,6 +623,7 @@ Output:
 **Purpose:** High-converting ad copy for all major platforms
 
 **Key Features:**
+
 - Platform-specific ad formats
 - Direct response copywriting
 - A/B testing variations
@@ -594,6 +631,7 @@ Output:
 - Compliance guidelines
 
 **Template Variables:**
+
 - `platform` - Facebook, Google, LinkedIn, TikTok, Twitter
 - `adFormat` - Image, video, carousel, etc.
 - `productService` - What you're advertising
@@ -608,22 +646,26 @@ Output:
 **Platform Ad Formats:**
 
 **1. Facebook/Instagram:**
+
 - Image Ads: Headline (40 chars), Primary Text (125 chars)
 - Video Ads: Hook in 3 seconds, CTA at 15 seconds
 - Carousel Ads: 2-10 cards with unique messaging
 - Story Ads: Vertical, full-screen, interactive
 
 **2. Google Ads:**
+
 - Search Ads: 3 headlines (30 chars), 2 descriptions (90 chars)
 - Display Ads: Image + headline + description
 - YouTube Ads: Skippable (5-sec hook), Non-skippable (15-sec)
 
 **3. LinkedIn Ads:**
+
 - Sponsored Content: Professional, B2B focused
 - Text Ads: Headline (25 chars), Description (75 chars)
 - Message Ads: Personalized, direct value
 
 **4. TikTok Ads:**
+
 - In-Feed Ads: Native, authentic, trend-aligned
 - TopView Ads: Full-screen takeover
 - Branded Hashtag: Challenge-based
@@ -631,22 +673,26 @@ Output:
 **Ad Copy Frameworks:**
 
 **AIDA Model:**
+
 - Attention: Stop the scroll (hook)
 - Interest: Build curiosity
 - Desire: Create emotional connection
 - Action: Clear CTA
 
 **PAS Framework:**
+
 - Problem: Identify pain point
 - Agitate: Amplify the problem
 - Solution: Present your offer
 
 **FAB Formula:**
+
 - Features: What it is
 - Advantages: What it does
 - Benefits: What it means for customer
 
 **CTA Examples:**
+
 - "Get Your Free Guide"
 - "Start Your 14-Day Trial"
 - "Claim Your Discount Now"
@@ -714,36 +760,32 @@ examples: [
 
 ### Pre-Built Chains
 
-**1. Viral TikTok Workflow**
-```
+1. Viral TikTok Workflow**
+
 Step 1: Generate hooks →
 Step 2: Write full script →
 Step 3: Create thumbnail concepts
-```
 
-**2. Complete YouTube Video**
-```
+2. Complete YouTube Video**
+
 Step 1: Write script →
 Step 2: Generate thumbnails →
 Step 3: Write description →
 Step 4: Suggest hashtags
-```
 
-**3. Product Launch Campaign**
-```
+3. Product Launch Campaign**
+
 Step 1: Create ad copy →
 Step 2: Build email sequence →
 Step 3: Design carousel post →
 Step 4: Write Twitter thread
-```
 
-**4. Content Repurposing**
-```
+4. Content Repurposing**
+
 Step 1: Create Twitter thread →
 Step 2: Design Instagram carousel →
 Step 3: Generate TikTok hooks →
 Step 4: Build email sequence
-```
 
 ### Chain Execution
 
@@ -778,31 +820,36 @@ const result = await promptChainingService.executeChain(
 
 The multi-step reasoning engine follows a 5-step process:
 
-**Step 1: Analysis**
+Step 1: Analysis**
+
 - Deep understanding of the goal
 - Audience identification
 - Success criteria definition
 - Constraint recognition
 
-**Step 2: Research**
+Step 2: Research**
+
 - Best practices gathering
 - Platform-specific insights
 - Psychological triggers
 - Competitor analysis
 
-**Step 3: Ideation**
+Step 3: Ideation**
+
 - Generate 5-7 unique approaches
 - Evaluate pros and cons
 - Rate effectiveness
 - Recommend best approach
 
-**Step 4: Refinement**
+Step 4: Refinement**
+
 - Create polished final output
 - Apply optimizations
 - Ensure best practices
 - Polish language and flow
 
-**Step 5: Validation**
+Step 5: Validation**
+
 - Critique the output
 - Identify improvements
 - Rate quality (1-10)
@@ -828,7 +875,8 @@ const result = await reasoningService.executeReasoningChain(
 
 ### Advanced Reasoning Features
 
-**1. Iterative Refinement**
+1. Iterative Refinement**
+
 ```typescript
 const refined = await reasoningService.refineWithFeedback(
   originalContent,
@@ -837,7 +885,8 @@ const refined = await reasoningService.refineWithFeedback(
 );
 ```
 
-**2. Multi-Perspective Analysis**
+2. Multi-Perspective Analysis**
+
 ```typescript
 const perspectives = await reasoningService.analyzeFromMultiplePerspectives(
   content,
@@ -849,7 +898,8 @@ const perspectives = await reasoningService.analyzeFromMultiplePerspectives(
 );
 ```
 
-**3. Comparative Analysis**
+3. Comparative Analysis**
+
 ```typescript
 const comparison = await reasoningService.compareVersions(
   [
@@ -915,49 +965,57 @@ const images = await imageGenerationService.generateBatch(requests);
 
 ### Preset Profiles
 
-**1. Casual & Friendly**
+1. Casual & Friendly**
+
 - Warm, conversational
 - Moderate emojis
 - Short sentences
 - Beginner-friendly
 
-**2. Professional & Authoritative**
+2. Professional & Authoritative**
+
 - Expert voice
 - No emojis
 - Data-driven
 - Industry terminology
 
-**3. Inspirational & Motivational**
+3. Inspirational & Motivational**
+
 - Uplifting and empowering
 - Expressive punctuation
 - Varied sentence structure
 - Action-oriented
 
-**4. Educational & Clear**
+4. Educational & Clear**
+
 - Instructive and patient
 - Step-by-step approach
 - Minimal emojis
 - Beginner-friendly
 
-**5. Witty & Entertaining**
+5. Witty & Entertaining**
+
 - Clever and fun
 - Heavy emoji usage
 - Playful humor
 - Varied structure
 
-**6. Luxury & Premium**
+6. Luxury & Premium**
+
 - Sophisticated and exclusive
 - No emojis
 - Long sentences
 - Refined vocabulary
 
-**7. Direct & No-Nonsense**
+7. Direct & No-Nonsense**
+
 - Straight to the point
 - No fluff
 - Short sentences
 - Results-focused
 
-**8. Empathetic & Caring**
+8. Empathetic & Caring**
+
 - Compassionate and supportive
 - Understanding tone
 - Moderate emojis
@@ -1004,32 +1062,38 @@ const customProfile = voiceToneService.createCustomProfile({
 
 ### Preset Brand Profiles
 
-**1. Tech Startup**
+1. Tech Startup**
+
 - Industry: Technology
 - Voice: Casual & Friendly
 - Values: Innovation, Speed, User-first
 
-**2. Content Creator Personal Brand**
+*2. Content Creator Personal Brand**
+
 - Industry: Media & Entertainment
 - Voice: Inspirational
 - Values: Authenticity, Value, Community
 
-**3. Fashion E-commerce**
+*3. Fashion E-commerce**
+
 - Industry: Fashion & Retail
 - Voice: Luxury & Premium
 - Values: Style, Sustainability, Inclusivity
 
-**4. B2B SaaS**
+*4. B2B SaaS**
+
 - Industry: Enterprise Software
 - Voice: Professional
 - Values: Efficiency, ROI, Reliability
 
-**5. Fitness & Wellness**
+*5. Fitness & Wellness**
+
 - Industry: Health & Wellness
 - Voice: Inspirational
 - Values: Health, Empowerment, Balance
 
-**6. Online Education**
+*6. Online Education**
+
 - Industry: E-Learning
 - Voice: Educational
 - Values: Learning, Accessibility, Growth
@@ -1182,6 +1246,7 @@ clearConfig();
 ## Cost Tracking
 
 The system automatically tracks:
+
 - Total generations
 - Total tokens used
 - Total cost incurred
@@ -1253,17 +1318,20 @@ deleteFromHistory('gen_123456');
 
 ### API Errors
 
-**"API key invalid"**
+"API key invalid"**
+
 - Verify your API key is correct
 - Check if key has necessary permissions
 - Ensure billing is set up
 
-**"Rate limit exceeded"**
+"Rate limit exceeded"**
+
 - Wait before retrying
 - Upgrade your API plan
 - Implement request queuing
 
-**"Model not available"**
+"Model not available"**
+
 - Check model name spelling
 - Verify model access in your plan
 - Use alternative model
@@ -1271,17 +1339,20 @@ deleteFromHistory('gen_123456');
 ### Generation Issues
 
 **Output quality poor**
+
 - Adjust temperature (lower for more focused)
 - Provide more context in prompt
 - Use examples in prompt
 - Select appropriate voice/tone profile
 
 **Output too short/long**
+
 - Adjust maxTokens parameter
 - Specify desired length in prompt
 - Use structured output format
 
 **Off-brand content**
+
 - Ensure brand profile is selected
 - Update brand guidelines
 - Refine voice/tone profile
@@ -1313,6 +1384,7 @@ deleteFromHistory('gen_123456');
 ## Support & Resources
 
 For questions or issues:
+
 1. Check this documentation
 2. Review code comments
 3. Test with examples provided
