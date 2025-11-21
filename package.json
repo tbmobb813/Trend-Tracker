@@ -51,5 +51,8 @@
   "private": true,
   "engines": {
     "node": ">=20 <23"
+  },
+  "volta": {
+    "node": "22.21.1"
   }
 }
