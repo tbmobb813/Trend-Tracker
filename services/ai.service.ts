@@ -141,13 +141,13 @@ export class AIService {
     });
 
     if (!response.ok) {
-      const error = await response.json();
-      throw new Error(`OpenAI API Error: ${error.error?.message || 'Unknown error'}`);
+      const error: any = await response.json();
+      throw new Error(`OpenAI API Error: ${error?.error?.message || 'Unknown error'}`);
     }
 
-    const data = await response.json();
-    const text = data.choices[0].message.content;
-    const tokens = data.usage.total_tokens;
+    const data: any = await response.json();
+    const text = data.choices?.[0]?.message?.content || '';
+    const tokens = data.usage?.total_tokens || 0;
     const cost = this.calculateOpenAICost(tokens, this.config!.model);
 
     return { text, tokens, cost };
@@ -183,13 +183,13 @@ export class AIService {
     });
 
     if (!response.ok) {
-      const error = await response.json();
-      throw new Error(`Anthropic API Error: ${error.error?.message || 'Unknown error'}`);
+      const error: any = await response.json();
+      throw new Error(`Anthropic API Error: ${error?.error?.message || 'Unknown error'}`);
     }
 
-    const data = await response.json();
-    const text = data.content[0].text;
-    const tokens = data.usage.input_tokens + data.usage.output_tokens;
+    const data: any = await response.json();
+    const text = data?.content?.[0]?.text || '';
+    const tokens = (data.usage?.input_tokens || 0) + (data.usage?.output_tokens || 0);
     const cost = this.calculateAnthropicCost(
       data.usage.input_tokens,
       data.usage.output_tokens,

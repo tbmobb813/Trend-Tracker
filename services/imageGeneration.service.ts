@@ -303,17 +303,17 @@ export class ImageGenerationService {
     });
 
     if (!response.ok) {
-      const error = await response.json();
-      throw new Error(`DALL-E API Error: ${error.error?.message || 'Unknown error'}`);
+      const error: any = await response.json();
+      throw new Error(`DALL-E API Error: ${error?.error?.message || 'Unknown error'}`);
     }
 
-    const data = await response.json();
+    const data: any = await response.json();
 
     return {
-      url: data.data[0].url,
+      url: data?.data?.[0]?.url,
       metadata: {
         provider: 'openai-dalle3',
-        revisedPrompt: data.data[0].revised_prompt,
+        revisedPrompt: data?.data?.[0]?.revised_prompt,
         model: 'dall-e-3',
         size,
       },
@@ -353,12 +353,12 @@ export class ImageGenerationService {
     });
 
     if (!response.ok) {
-      const error = await response.json();
-      throw new Error(`Stability AI Error: ${error.message || 'Unknown error'}`);
+      const error: any = await response.json();
+      throw new Error(`Stability AI Error: ${error?.message || 'Unknown error'}`);
     }
 
-    const data = await response.json();
-    const imageBase64 = data.artifacts[0].base64;
+    const data: any = await response.json();
+    const imageBase64 = data?.artifacts?.[0]?.base64;
 
     // Convert base64 to URL (in a real app, you'd upload this to your storage)
     const imageUrl = `data:image/png;base64,${imageBase64}`;
@@ -368,7 +368,7 @@ export class ImageGenerationService {
       metadata: {
         provider: 'stability-ai',
         model: 'stable-diffusion-xl',
-        seed: data.artifacts[0].seed,
+        seed: data?.artifacts?.[0]?.seed,
       },
     };
   }

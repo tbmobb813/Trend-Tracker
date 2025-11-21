@@ -30,49 +30,49 @@ export default function TabLayout() {
         name="index"
         options={{
           title: 'Discover',
-          tabBarIcon: ({ color, size }) => <Home size={size} color={color} />,
+          tabBarIcon: (props: { color?: string; size?: number }) => <Home size={props.size} color={props.color} />,
         }}
       />
       <Tabs.Screen
         name="search"
         options={{
           title: 'Search',
-          tabBarIcon: ({ color, size }) => <Search size={size} color={color} />,
+          tabBarIcon: (props: { color?: string; size?: number }) => <Search size={props.size} color={props.color} />,
         }}
       />
       <Tabs.Screen
         name="analytics"
         options={{
           title: 'Analytics',
-          tabBarIcon: ({ color, size }) => <BarChart size={size} color={color} />,
+          tabBarIcon: (props: { color?: string; size?: number }) => <BarChart size={props.size} color={props.color} />,
         }}
       />
       <Tabs.Screen
         name="calendar"
         options={{
           title: 'Calendar',
-          tabBarIcon: ({ color, size }) => <Calendar size={size} color={color} />,
+          tabBarIcon: (props: { color?: string; size?: number }) => <Calendar size={props.size} color={props.color} />,
         }}
       />
       <Tabs.Screen
         name="create"
         options={{
           title: 'Create',
-          tabBarIcon: ({ color, size }) => <PlusSquare size={size} color={color} />,
+          tabBarIcon: (props: { color?: string; size?: number }) => <PlusSquare size={props.size} color={props.color} />,
         }}
       />
       <Tabs.Screen
         name="saved"
         options={{
           title: 'Saved',
-          tabBarIcon: ({ color, size }) => <Bookmark size={size} color={color} />,
+          tabBarIcon: (props: { color?: string; size?: number }) => <Bookmark size={props.size} color={props.color} />,
         }}
       />
       <Tabs.Screen
         name="profile"
         options={{
           title: 'Profile',
-          tabBarIcon: ({ color, size }) => <User size={size} color={color} />,
+          tabBarIcon: (props: { color?: string; size?: number }) => <User size={props.size} color={props.color} />,
         }}
       />
     </Tabs>
