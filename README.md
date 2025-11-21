@@ -74,27 +74,29 @@ A comprehensive AI-powered content creation suite for social media creators. Gen
 
 ### Pinning Node version (recommended)
 
-To avoid issues caused by automatic Node version changes, pin a Node version for this project. You can use one of the following methods:
+This project is tested on Node v22.x (we recommend v22.21.1). Pinning Node avoids environment drift and subtle runtime/build issues.
 
 - Volta (recommended — seamless per-project pinning):
 
 ```bash
 curl https://get.volta.sh | bash
 # then in the project root
-volta pin node@20.19.5
+volta pin node@22.21.1
 volta pin npm@latest
 ```
 
 - nvm (creates a `.nvmrc` file that specifies the version):
 
 ```bash
-echo "20.19.5" > .nvmrc
+echo "22.21.1" > .nvmrc
 # then run `nvm use` in the project folder
 ```
 
-- asdf (alternative manager): add `nodejs 20.19.5` to `.tool-versions`
+- asdf (alternative manager): add `nodejs 22.21.1` to `.tool-versions`
 
-Using one of the above ensures your shell uses Node v20.x consistently for installs and the Metro dev server.
+Using one of the above ensures your shell uses Node v22.x consistently for installs and the Metro dev server.
+
+Developer note: this repository uses `patch-package` to record safe modifications to `node_modules` needed for web dev builds. Running `npm ci` (locally or in CI) will apply those patches via the `postinstall` script. The project's CI also runs `npm ci`, `npx tsc --noEmit`, `npm test`, and `npm run test:coverage` on every push/PR.
 
 ### Configuration
 

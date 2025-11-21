@@ -6,7 +6,7 @@ import Colors from '@/constants/colors';
 import TrendCard from '@/components/TrendCard';
 import CategoryFilter from '@/components/CategoryFilter';
 import InsightCard from '@/components/InsightCard';
-import { insightsMock } from '@/constants/mockData';
+import { useAnalyticsStore } from '@/store/analyticsStore';
 import { useRouter } from 'expo-router';
 import { Trend } from '@/types';
 import EmptyState from '@/components/EmptyState';
@@ -15,6 +15,7 @@ export default function DiscoverScreen() {
   const router = useRouter();
   const { trends, fetchTrends, selectedCategory, isLoading } = useTrendStore();
   const [refreshing, setRefreshing] = React.useState(false);
+  const insights = useAnalyticsStore(state => state.insights);
 
   useEffect(() => {
     fetchTrends();
@@ -63,7 +64,7 @@ export default function DiscoverScreen() {
             showsHorizontalScrollIndicator={false}
             contentContainerStyle={styles.insightsContainer}
           >
-            {insightsMock.map(insight => (
+            {insights.map(insight => (
               <InsightCard key={insight.id} insight={insight} />
             ))}
           </ScrollView>

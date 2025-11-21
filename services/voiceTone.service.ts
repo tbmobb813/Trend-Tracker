@@ -516,7 +516,7 @@ Focus on transformation, career outcomes, and personal growth.`,
     const profiles = this.getPresetProfiles();
 
     // Simple heuristic-based analysis
-    let scores: Array<{ profile: VoiceToneProfile; score: number }> = [];
+    const scores: Array<{ profile: VoiceToneProfile; score: number }> = [];
 
     for (const profile of profiles) {
       let score = 0;

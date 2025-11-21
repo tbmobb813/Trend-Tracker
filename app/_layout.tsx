@@ -7,6 +7,8 @@ import { Platform } from "react-native";
 import { ErrorBoundary } from "./error-boundary";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import Colors from "@/constants/colors";
+import { useTrendStore } from '@/store/trendStore';
+import { useAnalyticsStore } from '@/store/analyticsStore';
 
 export const unstable_settings = {
   initialRouteName: "(tabs)",
@@ -30,6 +32,25 @@ export default function RootLayout() {
   useEffect(() => {
     if (loaded) {
       SplashScreen.hideAsync();
+    }
+  }, [loaded]);
+
+  // Initialize data once fonts are loaded
+  useEffect(() => {
+    if (loaded) {
+      // Use the store actions to fetch initial data; using getState() avoids
+      // subscribing this layout to store changes.
+      try {
+        const trendActions = useTrendStore.getState();
+        const analyticsActions = useAnalyticsStore.getState();
+
+        // Fire-and-forget; stores handle loading state.
+        trendActions.fetchTrends();
+        analyticsActions.fetchAnalytics();
+      } catch (err) {
+        // eslint-disable-next-line no-console
+        console.warn('Initial data fetch failed', err);
+      }
     }
   }, [loaded]);
 

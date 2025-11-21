@@ -170,7 +170,7 @@ export class ImageGenerationService {
   ): Promise<GeneratedImage> {
     const dimensions = this.getPlatformDimensions(platform);
 
-    let prompt = this.buildSocialMediaPrompt(concept, platform, options);
+    const prompt = this.buildSocialMediaPrompt(concept, platform, options);
 
     const request: ImageGenerationRequest = {
       id: this.generateId(),

@@ -2,13 +2,13 @@ name: CI
 
 on:
   push:
-    branches: [ main, master ]
+    branches: [ main, final ]
   pull_request:
-    branches: [ main, master ]
+    branches: [ main, final ]
 
 jobs:
-  typecheck:
-    name: Typecheck and verify Node
+  test-and-checks:
+    name: Install → Typecheck → Tests → Coverage → import.meta scan
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -17,7 +17,8 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: '20.19.5'
+          # Pin to the project's major Node line. CI runner will pick a matching image.
+          node-version: '22'
           cache: 'npm'
 
       - name: Show Node and npm
@@ -25,8 +26,24 @@ jobs:
           node -v
           npm -v
 
-      - name: Install dependencies
+      - name: Install (apply patch-package via postinstall)
         run: npm ci --no-audit --no-fund
 
       - name: Typecheck (tsc)
         run: npx tsc --noEmit
+
+      - name: Run unit tests
+        run: npm test --silent
+
+      - name: Run test coverage (Vitest)
+        run: npm run test:coverage --silent
+
+      - name: Scan for import.meta occurrences
+        run: node scripts/check-import-meta.js
+
+      - name: Upload coverage (if present)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: coverage
