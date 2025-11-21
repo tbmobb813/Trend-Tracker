@@ -49,17 +49,20 @@ A comprehensive AI-powered content creation suite for social media creators. Gen
 ### Installation
 
 1. **Clone the repository**
+
    ```bash
    git clone https://github.com/tbmobb813/Trend-Tracker.git
    cd Trend-Tracker
    ```
 
 2. **Install dependencies**
+
    ```bash
    npm install
    ```
 
 3. **Start the development server**
+
    ```bash
    npm start
    ```
@@ -68,6 +71,30 @@ A comprehensive AI-powered content creation suite for social media creators. Gen
    - Press `i` for iOS Simulator
    - Press `a` for Android Emulator
    - Scan QR code with Expo Go app for physical device
+
+### Pinning Node version (recommended)
+
+To avoid issues caused by automatic Node version changes, pin a Node version for this project. You can use one of the following methods:
+
+- Volta (recommended — seamless per-project pinning):
+
+```bash
+curl https://get.volta.sh | bash
+# then in the project root
+volta pin node@20.19.5
+volta pin npm@latest
+```
+
+- nvm (creates a `.nvmrc` file that specifies the version):
+
+```bash
+echo "20.19.5" > .nvmrc
+# then run `nvm use` in the project folder
+```
+
+- asdf (alternative manager): add `nodejs 20.19.5` to `.tool-versions`
+
+Using one of the above ensures your shell uses Node v20.x consistently for installs and the Metro dev server.
 
 ### Configuration
 
@@ -85,7 +112,6 @@ Your API keys are encrypted and stored locally on your device - they're never se
 
 ## Project Structure
 
-```
 Trend-Tracker/
 ├── app/                          # Expo Router pages
 │   ├── (tabs)/                   # Tab navigation screens
@@ -113,7 +139,6 @@ Trend-Tracker/
 │   └── aiStore.ts                # Zustand state management
 └── types/
     └── index.ts                  # TypeScript definitions
-```
 
 ## Usage
 
@@ -142,18 +167,17 @@ Trend-Tracker/
 
 ### Example: Creating TikTok Hooks
 
-```
 1. Open TikTok Hooks tool
 2. Enter topic: "Morning routine for productivity"
 3. Select category: "Story Hooks"
 4. Tap "Generate Hooks"
 5. Get 5-7 viral hook variations with engagement scores
 6. Copy your favorites and use in your videos
-```
 
 ### Cost Estimates
 
 Typical costs per generation:
+
 - **Simple tools** (hashtags, captions): ~$0.01-0.02
 - **Complex tools** (scripts, threads): ~$0.03-0.05
 - **Average monthly usage**: $5-15 for active creators
@@ -221,6 +245,7 @@ const handleGenerate = async () => {
 ## Roadmap
 
 ### Completed
+
 - [x] 9 AI-powered content tools
 - [x] Settings and configuration screen
 - [x] Cost tracking and budget controls
@@ -228,6 +253,7 @@ const handleGenerate = async () => {
 - [x] Multi-provider support (OpenAI, Anthropic)
 
 ### Planned
+
 - [ ] Carousel Posts generator
 - [ ] Email Sequences builder
 - [ ] Ad Copy generator

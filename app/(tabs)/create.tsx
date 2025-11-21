@@ -94,7 +94,7 @@ export default function CreateScreen() {
               title={tool.title}
               description={tool.description}
               icon={tool.icon}
-              onPress={() => router.push(tool.route)}
+              onPress={() => router.push(tool.route as any)}
             />
           ))}
         </View>

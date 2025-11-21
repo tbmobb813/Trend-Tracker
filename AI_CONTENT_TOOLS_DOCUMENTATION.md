@@ -74,17 +74,15 @@ types/
 
 **Example Prompt:**
 
-```
 Topic: Productivity tips for entrepreneurs
 Audience: Startup founders and solopreneurs
 Content Type: Tutorial
 Emotion: Curiosity
 
 Output:
+
 1. "I went from working 80 hours/week to 30... here's what changed" (Story - 92% engagement)
 2. "Your to-do list is the reason you're failing" (Claim - 88% engagement)
-...
-```
 
 ---
 
@@ -510,14 +508,14 @@ Output:
 
 **Carousel Structures:**
 
-**Instagram (10 slides):**
+Instagram (10 slides):**
 
 1. Hook slide (stop scroll)
 2-8. Value delivery (one point per slide)
 9. Summary/Recap
 10. CTA slide
 
-**LinkedIn (8 slides):**
+*LinkedIn (8 slides):**
 
 1. Bold claim or question
 2-6. Supporting points with data
@@ -766,21 +764,21 @@ Step 1: Generate hooks →
 Step 2: Write full script →
 Step 3: Create thumbnail concepts
 
-2. Complete YouTube Video**
+*2. Complete YouTube Video**
 
 Step 1: Write script →
 Step 2: Generate thumbnails →
 Step 3: Write description →
 Step 4: Suggest hashtags
 
-3. Product Launch Campaign**
+*3. Product Launch Campaign**
 
 Step 1: Create ad copy →
 Step 2: Build email sequence →
 Step 3: Design carousel post →
 Step 4: Write Twitter thread
 
-4. Content Repurposing**
+*4. Content Repurposing**
 
 Step 1: Create Twitter thread →
 Step 2: Design Instagram carousel →
@@ -883,7 +881,6 @@ const refined = await reasoningService.refineWithFeedback(
   'Make it more engaging and add statistics',
   3 // iterations
 );
-```
 
 2. Multi-Perspective Analysis**
 
@@ -896,7 +893,6 @@ const perspectives = await reasoningService.analyzeFromMultiplePerspectives(
     { role: 'Brand Strategist', focus: 'Brand alignment and messaging' }
   ]
 );
-```
 
 3. Comparative Analysis**
 
@@ -908,7 +904,6 @@ const comparison = await reasoningService.compareVersions(
   ],
   ['Engagement potential', 'Clarity', 'Brand fit', 'Conversion likelihood']
 );
-```
 
 ---
 
@@ -930,7 +925,6 @@ const thumbnail = await imageGenerationService.generateThumbnail(
     faceExpression: 'surprised and excited'
   }
 );
-```
 
 ### Social Media Images
 
@@ -972,49 +966,49 @@ const images = await imageGenerationService.generateBatch(requests);
 - Short sentences
 - Beginner-friendly
 
-2. Professional & Authoritative**
+*2. Professional & Authoritative**
 
 - Expert voice
 - No emojis
 - Data-driven
 - Industry terminology
 
-3. Inspirational & Motivational**
+*3. Inspirational & Motivational**
 
 - Uplifting and empowering
 - Expressive punctuation
 - Varied sentence structure
 - Action-oriented
 
-4. Educational & Clear**
+*4. Educational & Clear**
 
 - Instructive and patient
 - Step-by-step approach
 - Minimal emojis
 - Beginner-friendly
 
-5. Witty & Entertaining**
+*5. Witty & Entertaining**
 
 - Clever and fun
 - Heavy emoji usage
 - Playful humor
 - Varied structure
 
-6. Luxury & Premium**
+*6. Luxury & Premium**
 
 - Sophisticated and exclusive
 - No emojis
 - Long sentences
 - Refined vocabulary
 
-7. Direct & No-Nonsense**
+*7. Direct & No-Nonsense**
 
 - Straight to the point
 - No fluff
 - Short sentences
 - Results-focused
 
-8. Empathetic & Caring**
+*8. Empathetic & Caring**
 
 - Compassionate and supportive
 - Understanding tone
@@ -1338,20 +1332,20 @@ deleteFromHistory('gen_123456');
 
 ### Generation Issues
 
-**Output quality poor**
+*Output quality poor**
 
 - Adjust temperature (lower for more focused)
 - Provide more context in prompt
 - Use examples in prompt
 - Select appropriate voice/tone profile
 
-**Output too short/long**
+*Output too short/long**
 
 - Adjust maxTokens parameter
 - Specify desired length in prompt
 - Use structured output format
 
-**Off-brand content**
+*Off-brand content**
 
 - Ensure brand profile is selected
 - Update brand guidelines

@@ -19,12 +19,29 @@ module.exports = async function (env, argv) {
       path.resolve(__dirname, 'node_modules/@react-native/community-cli-plugin'),
     ],
     use: [
+      // Replace occurrences like `${import.meta.resolve("./file.css")}`
       {
         loader: require.resolve('string-replace-loader'),
         options: {
-          search: 'import.meta.resolve\\(([`\"\'])(.+?)\\1\\)',
-          flags: 'g',
+          // use a RegExp literal to avoid JS string escape complexity
+          search: /\$\{\s*import\.meta\.resolve\((['"`])(.+?)\1\)\s*\}/g,
           replace: '"$2"',
+        },
+      },
+      // Replace plain import.meta.resolve("...") occurrences
+      {
+        loader: require.resolve('string-replace-loader'),
+        options: {
+          search: /import\.meta\.resolve\((['"`])(.+?)\1\)/g,
+          replace: '"$2"',
+        },
+      },
+      // Replace import.meta.url references with an empty string
+      {
+        loader: require.resolve('string-replace-loader'),
+        options: {
+          search: /import\.meta\.url/g,
+          replace: '""',
         },
       },
     ],

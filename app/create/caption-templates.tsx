@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import * as React from 'react';
+const { useState, useEffect } = React;
 import {
   View,
   Text,
@@ -19,7 +20,6 @@ import { useTheme } from '@/constants/theme';
 import { useAIStore } from '@/store/aiStore';
 import { PROMPT_TEMPLATES } from '@/services/promptTemplates';
 import { interpolatePrompt } from '@/services/promptTemplates';
-import { CostEstimate } from '@/components/ai/CostTransparency';
 import { useOnboarding, ContextualTooltip } from '@/components/onboarding/ProgressiveOnboarding';
 
 interface CaptionTemplate {
@@ -401,12 +401,16 @@ export default function CaptionTemplatesScreen() {
             )}
 
             {/* Cost Estimate */}
+            {/* Cost Estimate */}
             {contentTopic.trim() && (
               <View style={styles.costContainer}>
-                <CostEstimate estimatedCost={estimatedCost} showDetails={false} />
+                <View style={{ padding: 8 }}>
+                  <Text style={{ color: theme.colors.textSecondary, fontSize: 13 }}>
+                    Estimated cost: ${estimatedCost.toFixed(3)}
+                  </Text>
+                </View>
               </View>
             )}
-
             {/* Generate Button */}
             <TouchableOpacity
               style={[
